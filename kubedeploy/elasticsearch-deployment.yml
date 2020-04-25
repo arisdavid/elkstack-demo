@@ -8,6 +8,7 @@ spec:
       component: elasticsearch
   template:
     metadata:
+      name: elasticsearch
       labels:
         component: elasticsearch
     spec:
@@ -23,3 +24,17 @@ spec:
         - containerPort: 9200
           name: http
           protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: elasticsearch
+  labels:
+    service: elasticsearch
+spec:
+  type: NodePort
+  selector:
+    component: elasticsearch
+  ports:
+  - port: 9200
+    targetPort: 9200

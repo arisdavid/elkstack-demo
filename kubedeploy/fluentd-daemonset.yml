@@ -17,8 +17,6 @@ spec:
         name: fluentd-pod
     spec:
       tolerations:
-        # this toleration is to have the daemonset runnable on master nodes
-        # remove it if your masters can't run pods
         - key: node-role.kubernetes.io/master
           effect: NoSchedule
       serviceAccount: fluentd
@@ -28,18 +26,16 @@ spec:
           name: fluentd
           resources:
             requests:
-              cpu: 0.5
+              cpu: 100m
               memory: 200Mi
             limits:
               memory: 200Mi
           volumeMounts:
-            - mountPath: /etc/fluent
-              name: config-file
             - mountPath: /var/log
               name: var-log
             - mountPath: /var/lib/docker/containers
               name: varlibdockercontainers
-              readOnly: True
+              readOnly: true
           env:
            - name:  FLUENT_ELASTICSEARCH_HOST
              value: "elasticsearch.logging"
@@ -53,15 +49,8 @@ spec:
       volumes:
         - name: var-log
           hostPath:
-            path: /D/fluentd/log'
+            path: /D/fluentd/log
         - name: varlibdockercontainers
           hostPath:
-            path: /D/fluentd/lib/docker/containers'
-        - name: config-file
-          configMap:
-            name: fluentd-configmap
-            items:
-              - key: fluent.conf
-                path: fluent.conf
-
+            path: /D/fluentd/lib/docker/containers
 

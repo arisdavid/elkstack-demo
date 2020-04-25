@@ -8,6 +8,8 @@ kubectl delete clusterrolebinding fluentd -n kube-system
 kubectl delete clusterrole fluentd -n kube-systems
 kubectl delete daemonset fluentd-ds -n kube-system
 
+kubectl delete configmap fluentd-configmap -n kube-system
 kubectl delete pod random-logger -n logging
+
 
 read -p "Press enter to exit"
